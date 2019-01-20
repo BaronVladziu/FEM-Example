@@ -3,6 +3,8 @@ package solver;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class Solver {
 
     public final List<Point> solve(int n, double k) {
@@ -14,7 +16,7 @@ public class Solver {
             for (int i = 0; i < n + 1; i++) {
                 system.set(i, j, calcB(i, j, n, k));
             }
-            system.set(n + 1, j, calcL(j, n));
+            system.set(n + 1, j, calcL(j, n, k));
         }
         system.print();
 
@@ -39,29 +41,29 @@ public class Solver {
         if (i < 0 || i > n || j < 0 || j > n) {
             throw new RuntimeException("Values of i and j must be between 0 and n!");
         }
-        if (i == j) {
-            if (i == 0) {
-                return -0.5 + k*n;
-            } else if (i == n) {
-                return 0.5 + k*n;
-            } else {
-                return 2*k*n;
-            }
-        } else if (j - i == 1) {
+        if (i == 0 && j == 0) {
+            return 0.5;
+        } else if (i == 1 && j == 0) {
+            return -0.5;
+        } else if (i == n && j == n) {
+            return 0.5 + k * n;
+        } else if (i == j) {
+            return 1 + k*n;
+        } else if (abs(j - i) == 1) {
             return -0.5 - k*n;
-        } else if (j - i == -1) {
-            return 0.5 - k*n;
         } else {
             return 0;
         }
     }
 
-    private double calcL(int i, int n) {
+    private double calcL(int i, int n, double k) {
         if (i < 0 || i > n) {
             throw new RuntimeException("Value of i must be between 0 and n!");
         }
-        if (i == 0 || i == n) {
-            return 5/(double)(2*n) - 7.5;
+        if (i == 0) {
+            return 5 / (double) (2 * n) - 7.5;
+        } else if (i == n) {
+            return 5 / (double) (2 * n) - 7.5 + 8*k;
         } else {
             return 5/(double)n - 7.5;
         }
