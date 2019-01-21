@@ -104,5 +104,11 @@ public class SystemOfEquations {
         }
     }
 
+    void swap(int x1, int y1, int x2, int y2) {
+        double temp = this.table[x1][y1];
+        this.table[x1][y1] = this.table[x2][y2];
+        this.table[x2][y2] = temp;
+    }
+
 
 }

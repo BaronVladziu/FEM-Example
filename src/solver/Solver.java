@@ -3,8 +3,6 @@ package solver;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.lang.Math.abs;
-
 public class Solver {
 
     public final List<Point> solve(int n, double k) {
@@ -14,7 +12,7 @@ public class Solver {
         system.set(0, 0, 1);
         for (int j = 1; j < n + 1; j++) {
             for (int i = 0; i < n + 1; i++) {
-                system.set(i, j, calcB(i, j, n, k));
+                system.set(i, j, calcB(j, i, n, k));
             }
             system.set(n + 1, j, calcL(j, n, k));
         }
@@ -42,15 +40,17 @@ public class Solver {
             throw new RuntimeException("Values of i and j must be between 0 and n!");
         }
         if (i == 0 && j == 0) {
-            return 0.5;
-        } else if (i == 1 && j == 0) {
             return -0.5;
+        } else if (i == 1 && j == 0) {
+            return 0.5;
         } else if (i == n && j == n) {
-            return 0.5 + k * n;
+            return 0.5 + k*n;
         } else if (i == j) {
-            return 1 + k*n;
-        } else if (abs(j - i) == 1) {
+            return 2*k*n;
+        } else if (j - i == 1) {
             return -0.5 - k*n;
+        } else if (j - i == -1) {
+            return 1.5 - k*n;
         } else {
             return 0;
         }
